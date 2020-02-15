@@ -1,0 +1,29 @@
+using AutoFixture;
+
+namespace Bashi.Tests.Framework.Data
+{
+    public static class TestData
+    {
+        private static readonly Fixture Fixture = new Fixture();
+
+        static TestData()
+        {
+            WellKnownInt = NextInt();
+            WellKnownString = NextString();
+        }
+
+        public static int WellKnownInt { get; }
+
+        public static string WellKnownString { get; }
+
+        public static int NextInt()
+        {
+            return Fixture.Create<int>();
+        }
+
+        public static string NextString()
+        {
+            return Fixture.Create<string>();
+        }
+    }
+}

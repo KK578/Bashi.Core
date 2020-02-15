@@ -1,26 +1,25 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>netstandard2.1</TargetFramework>
-        <Nullable>enable</Nullable>
-    </PropertyGroup>
-    
-    <PropertyGroup>
-        <Title>Bashi.Core</Title>
-        <Version>0.0.1.0</Version>
-        <Description>Collection of shared components for Bashi.</Description>
-        <Authors>Kevin Kwan</Authors>
-        <Company>Bashi</Company>
-        <Copyright>Copyright © 2020 Bashi</Copyright>
-        <PackageProjectUrl>https://kk578.github.io/bashi/</PackageProjectUrl>
-        <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
-        <RepositoryUrl>https://github.com/KK578/Bashi.Core</RepositoryUrl>
-        <RepositoryType>git</RepositoryType>
-        <NeutralLanguage>en-GB</NeutralLanguage>
-    </PropertyGroup>
-    
-    <ItemGroup>
-        <Content Include="..\..\LICENSE.md" Pack="true" PackagePath="$(PackageLicenseFile)" />
-    </ItemGroup>
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Title>Bashi.Core</Title>
+    <Description>Collection of shared components for Bashi.</Description>
+    <Authors>Kevin Kwan</Authors>
+    <Company>Bashi</Company>
+    <Copyright>Copyright © 2020 Bashi</Copyright>
+    <PackageProjectUrl>https://kk578.github.io/bashi/</PackageProjectUrl>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+    <RepositoryUrl>https://github.com/KK578/Bashi.Core</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <NeutralLanguage>en-GB</NeutralLanguage>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="..\..\LICENSE.md" Pack="true" PackagePath="$(PackageLicenseFile)" />
+  </ItemGroup>
 
 </Project>
