@@ -25,12 +25,6 @@ jobs:
       - name: "[Setup] Set VERSION"
         run: echo "::set-env name=VERSION::$GitVersion_NuGetVersionV2"
 
-      - name: "[Artifacts] Upload Package Version"
-        uses: actions/upload-artifact@v1
-        with:
-          name: version.txt
-          path: version.txt
-
       - name: "[Setup] Install .NET Core"
         uses: actions/setup-dotnet@v1
         with:
@@ -87,7 +81,7 @@ jobs:
       - name: "[Artifacts] Upload Nuget Package"
         uses: actions/upload-artifact@v1
         with:
-          name: Bashi.Core.${{ env.VERSION }}.nupkg
+          name: Bashi.Core.Artifacts
           path: src/Bashi.Core/bin/Release/Bashi.Core.${{ env.VERSION }}.nupkg
 
       - name: "[Coverage] Upload to SonarCloud"
@@ -109,18 +103,10 @@ jobs:
     needs: build
 #    if: github.event_name == "release"
     steps:
-      - name: "[Artifacts] Download Package Version"
-        uses: actions/download-artifact@v1
-        with:
-          name: version.txt
-
-      - name: "[Setup] Set VERSION"
-        run: echo "::set-env VERSION=$(cat version.txt)"
-
       - name: "[Artifacts] Download Nuget Package"
         uses: actions/download-artifact@v1
         with:
-          name: Bashi.Core.${{ env.VERSION }}.nupkg
+          name: Bashi.Core.Artifacts
 
       - name: "[Deploy] Publish Package"
-        run: echo dotnet nuget push Bashi.Core.${{ env.VERSION }}.nupkg" -s https://api.nuget.org/v3/index.json
+        run: echo dotnet nuget push Bashi.Core.Artifacts/Bashi.Core.*.nupkg" -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
