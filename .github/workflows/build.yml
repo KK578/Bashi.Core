@@ -25,7 +25,7 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: version.txt
-          path: /github/workspace/version.txt
+          path: version.txt
 
       - name: "[Debug] Dump Environment"
         run: env
