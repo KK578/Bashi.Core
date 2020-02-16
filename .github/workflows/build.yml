@@ -48,13 +48,27 @@ jobs:
         run: |
           VERSION=$(cat version.txt)
           echo $VERSION
-          dotnet build --configuration Release /p:Version=$VERSION;AssemblyVersion=$VERSION
+          dotnet build --configuration Release /p:Version=$VERSION /p:AssemblyVersion=$VERSION
 
       - name: "[Test] Run Tests"
-        run: dotnet test --configuration Release --no-build test/Bashi.Core.Tests/Bashi.Core.Tests.csproj
+        run: |
+          dotnet test \
+            --configuration Release \
+            --no-build \
+            test/Bashi.Core.Tests/Bashi.Core.Tests.csproj
 
       - name: "[Pack] Create NuGet Package"
-        run: dotnet pack --configuration Release --no-build -p:RepositoryBranch=${GITHUB_REF#refs/heads/} -p:RepositoryCommit=$GITHUB_SHA
+        run: |
+          VERSION=$(cat version.txt)
+          echo $VERSION
+          dotnet pack \
+            --configuration Release \
+            --no-build \
+            /p:Version=$VERSION \
+            /p:AssemblyVersion=$VERSION \
+            /p:RepositoryBranch=${GITHUB_REF#refs/heads/} \
+            /p:RepositoryCommit=$GITHUB_SHA
+          dotnet nuget push src/Bashi.Core/bin/Release/Bashi.Core.*.nupkg" --source "github"
 
       - name: "[Coverage] Upload to SonarCloud"
         env:
