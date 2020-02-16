@@ -7,6 +7,7 @@
   </PropertyGroup>
   
   <PropertyGroup>
+    <VSTestLogger>NUnit</VSTestLogger>
     <CollectCoverage>true</CollectCoverage>
     <CoverletOutput>../../coverage/</CoverletOutput>
     <CoverletOutputFormat>opencover,lcov</CoverletOutputFormat>
@@ -22,6 +23,7 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
     <PackageReference Include="NUnit" Version="3.12.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.16.1" />
+    <PackageReference Include="NunitXml.TestLogger" Version="2.1.41" />
   </ItemGroup>
 
 </Project>
