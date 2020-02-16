@@ -22,7 +22,7 @@ jobs:
           args: /github/workspace /nofetch /exec /bin/sh /execargs "-c \"echo $GitVersion_NuGetVersionV2 > /github/workspace/version.txt\""
 
       - name: "[Setup] Set VERSION"
-        run: echo "::set-env VERSION=$GitVersion_NuGetVersionV2"
+        run: echo "::set-env name=VERSION::$GitVersion_NuGetVersionV2"
 
       - name: "[Artifacts] Upload Package Version"
         uses: actions/upload-artifact@v1
