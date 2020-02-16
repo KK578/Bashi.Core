@@ -20,7 +20,7 @@ jobs:
       - name: "[Setup] Create GitVersion"
         uses: docker://gittools/gitversion:5.1.3-linux-netcoreapp2.1
         with:
-          args: /github/workspace /nofetch
+          args: /github/workspace /nofetch /exec /bin/sh /execargs "-c \"echo $GitVersion_FullSemVer > /github/workspace/version.txt\"
 
       - name: "[Debug] Dump Environment"
         run: env
