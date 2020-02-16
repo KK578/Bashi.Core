@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - "*"
-    tag:
+    tags:
       - "*"
   pull_request:
 
@@ -24,6 +24,12 @@ jobs:
         uses: docker://gittools/gitversion:5.1.3-linux-netcoreapp2.1
         with:
           args: /github/workspace /nofetch /exec /bin/sh /execargs "-c \"echo $GitVersion_NuGetVersionV2 > /github/workspace/version.txt\""
+
+      - name: "[Artifacts] Upload Package Version"
+        uses: actions/upload-artifact@v1
+        with:
+          name: version.txt
+          path: /github/workspace/version.txt
 
       - name: "[Debug] Dump Environment"
         run: env
@@ -81,12 +87,6 @@ jobs:
             /p:RepositoryBranch=${GITHUB_REF#refs/heads/} \
             /p:RepositoryCommit=$GITHUB_SHA
 
-      - name: "[Artifacts] Upload Package Version"
-        uses: actions/upload-artifact@v1
-        with:
-          name: version.txt
-          path: /github/workspace/version.txt
-
       - name: "[Artifacts] Upload Nuget Package"
         uses: actions/upload-artifact@v1
         with:
@@ -107,26 +107,26 @@ jobs:
           path-to-lcov: "./coverage/coverage.info"
 
 
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: "[Debug] Dump Environment"
-        run: env
-
-      - name: "[Artifacts] Download Package Version"
-        uses: actions/download-artifact@v1
-        with:
-          name: version.txt
-
-      - name: "[Artifacts] Download Nuget Package"
-        uses: actions/download-artifact@v1
-        with:
-          name: Bashi.Core.$VERSION.nupkg
-        env:
-          VERSION: $(cat version.txt)
-
-      - name: "[Deploy] Publish Package"
-        run: echo dotnet nuget push src/Bashi.Core/bin/Release/Bashi.Core.$VERSION.nupkg" --source "github"
-        env:
-          VERSION: $(cat version.txt)
+#  deploy:
+#    runs-on: ubuntu-latest
+#    needs: build
+#    steps:
+#      - name: "[Debug] Dump Environment"
+#        run: env
+#
+#      - name: "[Artifacts] Download Package Version"
+#        uses: actions/download-artifact@v1
+#        with:
+#          name: version.txt
+#
+#      - name: "[Artifacts] Download Nuget Package"
+#        uses: actions/download-artifact@v1
+#        with:
+#          name: Bashi.Core.$VERSION.nupkg
+#        env:
+#          VERSION: $(cat version.txt)
+#
+#      - name: "[Deploy] Publish Package"
+#        run: echo dotnet nuget push src/Bashi.Core/bin/Release/Bashi.Core.$VERSION.nupkg" --source "github"
+#        env:
+#          VERSION: $(cat version.txt)
