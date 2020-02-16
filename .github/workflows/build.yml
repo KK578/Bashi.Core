@@ -3,6 +3,7 @@ name: Build
 on:
   push:
   pull_request:
+  release:
 
 jobs:
   build:
@@ -29,9 +30,6 @@ jobs:
         with:
           name: version.txt
           path: version.txt
-
-      - name: "[Debug] Dump Environment"
-        run: env
 
       - name: "[Setup] Install .NET Core"
         uses: actions/setup-dotnet@v1
@@ -106,25 +104,23 @@ jobs:
           path-to-lcov: "./coverage/coverage.info"
 
 
-#  deploy:
-#    runs-on: ubuntu-latest
-#    needs: build
-#    steps:
-#      - name: "[Debug] Dump Environment"
-#        run: env
-#
-#      - name: "[Artifacts] Download Package Version"
-#        uses: actions/download-artifact@v1
-#        with:
-#          name: version.txt
-#
-#      - name: "[Setup] Set VERSION"
-#        run: echo "::set-env VERSION=$(cat version.txt)"
-#
-#      - name: "[Artifacts] Download Nuget Package"
-#        uses: actions/download-artifact@v1
-#        with:
-#          name: Bashi.Core.${{ env.VERSION}}.nupkg
-#
-#      - name: "[Deploy] Publish Package"
-#        run: echo dotnet nuget push src/Bashi.Core/bin/Release/Bashi.Core.${{ env.VERSION }}.nupkg" --source "github"
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+#    if: github.event_name == "release"
+    steps:
+      - name: "[Artifacts] Download Package Version"
+        uses: actions/download-artifact@v1
+        with:
+          name: version.txt
+
+      - name: "[Setup] Set VERSION"
+        run: echo "::set-env VERSION=$(cat version.txt)"
+
+      - name: "[Artifacts] Download Nuget Package"
+        uses: actions/download-artifact@v1
+        with:
+          name: Bashi.Core.${{ env.VERSION }}.nupkg
+
+      - name: "[Deploy] Publish Package"
+        run: echo dotnet nuget push Bashi.Core.${{ env.VERSION }}.nupkg" -s https://api.nuget.org/v3/index.json
