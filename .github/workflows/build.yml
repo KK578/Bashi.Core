@@ -56,7 +56,7 @@ jobs:
             --no-restore \
             --configuration Release \
             /p:VersionPrefix=$GitVersion_MajorMinorPatch \
-            /p:VersionSuffix=$(GitVersion_PreReleaseTag)+$(GitVersion_BuildMetaData) \
+            /p:VersionSuffix="$GitVersion_NuGetPreReleaseTagV2+$GitVersion_BuildMetaData" \
             /p:AssemblyVersion=$GitVersion_AssemblySemVer \
             /p:PackageVersion="${{ env.VERSION }}" \
             /p:RepositoryBranch=${GITHUB_REF#refs/heads/} \
@@ -75,7 +75,7 @@ jobs:
             --configuration Release \
             --no-build \
             /p:VersionPrefix=$GitVersion_MajorMinorPatch \
-            /p:VersionSuffix=$(GitVersion_PreReleaseTag)+$(GitVersion_BuildMetaData) \
+            /p:VersionSuffix="$GitVersion_NuGetPreReleaseTagV2+$GitVersion_BuildMetaData" \
             /p:AssemblyVersion=$GitVersion_AssemblySemVer \
             /p:PackageVersion="${{ env.VERSION }}" \
             /p:RepositoryBranch=${GITHUB_REF#refs/heads/} \
