@@ -22,6 +22,9 @@ jobs:
         with:
           args: /github/workspace /nofetch /exec /bin/sh /execargs "-c \"echo $GitVersion_NuGetVersionV2 > /github/workspace/version.txt\""
 
+      - name: "[Debug] Dump Environment"
+        run: env
+
       - name: "[Setup] Set VERSION"
         run: echo "::set-env name=VERSION::$GitVersion_NuGetVersionV2"
 
@@ -101,7 +104,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: build
-#    if: github.event_name == "release"
+    if: github.event_name == "release"
     steps:
       - name: "[Artifacts] Download Nuget Package"
         uses: actions/download-artifact@v1
@@ -109,4 +112,4 @@ jobs:
           name: Bashi.Core.Artifacts
 
       - name: "[Deploy] Publish Package"
-        run: echo dotnet nuget push Bashi.Core.Artifacts/Bashi.Core.*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
+        run: dotnet nuget push Bashi.Core.Artifacts/Bashi.Core.*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
