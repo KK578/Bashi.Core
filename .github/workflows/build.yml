@@ -26,7 +26,7 @@ jobs:
         run: env
 
       - name: "[Setup] Set VERSION"
-        run: echo "::set-env name=VERSION::$(GitVersion_NuGetVersionV2)+$(GitVersion_BuildMetaData)"
+        run: echo "::set-env name=VERSION::$GitVersion_NuGetVersionV2+$GitVersion_BuildMetaData"
 
       - name: "[Setup] Install .NET Core"
         uses: actions/setup-dotnet@v1
@@ -45,7 +45,7 @@ jobs:
             /d:sonar.host.url=https://sonarcloud.io \
             /d:sonar.cs.opencover.reportsPaths="coverage/coverage.opencover.xml" \
             /d:sonar.cs.nunit.reportsPaths="test/*/TestResults/TestResults.xml" \
-            /v:$GitVersion_SemVer
+            /v:"${{ env.VERSION }}"
 
       - name: "[Build] NuGet Restore"
         run: dotnet restore
@@ -58,7 +58,7 @@ jobs:
             /p:VersionPrefix=$GitVersion_MajorMinorPatch \
             /p:VersionSuffix=$(GitVersion_PreReleaseTag)+$(GitVersion_BuildMetaData) \
             /p:AssemblyVersion=$GitVersion_AssemblySemVer \
-            /p:PackageVersion=${{ env.VERSION }} \
+            /p:PackageVersion="${{ env.VERSION }}" \
             /p:RepositoryBranch=${GITHUB_REF#refs/heads/} \
             /p:RepositoryCommit=$GITHUB_SHA
 
@@ -77,7 +77,7 @@ jobs:
             /p:VersionPrefix=$GitVersion_MajorMinorPatch \
             /p:VersionSuffix=$(GitVersion_PreReleaseTag)+$(GitVersion_BuildMetaData) \
             /p:AssemblyVersion=$GitVersion_AssemblySemVer \
-            /p:PackageVersion=${{ env.VERSION }} \
+            /p:PackageVersion="${{ env.VERSION }}" \
             /p:RepositoryBranch=${GITHUB_REF#refs/heads/} \
             /p:RepositoryCommit=$GITHUB_SHA
 
