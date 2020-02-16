@@ -21,6 +21,9 @@ jobs:
         with:
           args: /github/workspace /nofetch /exec /bin/sh /execargs "-c \"echo $GitVersion_NuGetVersionV2 > /github/workspace/version.txt\""
 
+      - name: "[Setup] Set VERSION"
+        run: echo "::set-env VERSION=$GitVersion_NuGetVersionV2"
+
       - name: "[Artifacts] Upload Package Version"
         uses: actions/upload-artifact@v1
         with:
@@ -86,8 +89,8 @@ jobs:
       - name: "[Artifacts] Upload Nuget Package"
         uses: actions/upload-artifact@v1
         with:
-          name: Bashi.Core.$(GitVersion_NuGetVersionV2).nupkg
-          path: src/Bashi.Core/bin/Release/Bashi.Core.$(GitVersion_NuGetVersionV2).nupkg
+          name: Bashi.Core.${{ env.VERSION }}.nupkg
+          path: src/Bashi.Core/bin/Release/Bashi.Core.${{ env.VERSION }}.nupkg
 
       - name: "[Coverage] Upload to SonarCloud"
         env:
@@ -115,14 +118,13 @@ jobs:
 #        with:
 #          name: version.txt
 #
+#      - name: "[Setup] Set VERSION"
+#        run: echo "::set-env VERSION=$(cat version.txt)"
+#
 #      - name: "[Artifacts] Download Nuget Package"
 #        uses: actions/download-artifact@v1
 #        with:
-#          name: Bashi.Core.$VERSION.nupkg
-#        env:
-#          VERSION: $(cat version.txt)
+#          name: Bashi.Core.${{ env.VERSION}}.nupkg
 #
 #      - name: "[Deploy] Publish Package"
-#        run: echo dotnet nuget push src/Bashi.Core/bin/Release/Bashi.Core.$VERSION.nupkg" --source "github"
-#        env:
-#          VERSION: $(cat version.txt)
+#        run: echo dotnet nuget push src/Bashi.Core/bin/Release/Bashi.Core.${{ env.VERSION }}.nupkg" --source "github"
