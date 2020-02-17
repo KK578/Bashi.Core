@@ -49,6 +49,8 @@ jobs:
           dotnet build \
             --no-restore \
             --configuration Release \
+            /p:VersionPrefix=$GitVersion_MajorMinorPatch \
+            /p:VersionSuffix=$GitVersion_PreReleaseLabel \
             /p:AssemblyVersion=$GitVersion_AssemblySemVer \
             /p:FileVersion=$GitVersion_AssemblySemFileVer \
             /p:InformationalVersion=$GitVersion_InformationalVersion \
@@ -67,17 +69,20 @@ jobs:
           dotnet pack \
             --configuration Release \
             --no-build \
+            /p:VersionPrefix=$GitVersion_MajorMinorPatch \
+            /p:VersionSuffix=$GitVersion_PreReleaseLabel \
             /p:AssemblyVersion=$GitVersion_AssemblySemVer \
             /p:FileVersion=$GitVersion_AssemblySemFileVer \
             /p:InformationalVersion=$GitVersion_InformationalVersion \
             /p:RepositoryBranch=${GITHUB_REF#refs/heads/} \
             /p:RepositoryCommit=$GITHUB_SHA
+          echo "::set-output name=PACKAGE_VERSION::$(find src/ -type f -iname "Bashi.Core.*.nupkg")"
 
       - name: "[Artifacts] Upload Nuget Package"
         uses: actions/upload-artifact@v1
         with:
           name: Bashi.Core.Artifacts
-          path: src/Bashi.Core/bin/Release/Bashi.Core.*.nupkg
+          path: ${{ steps.nuget-pack.outputs.PACKAGE_VERSION }}
 
       - name: "[Coverage] Upload to SonarCloud"
         env:
