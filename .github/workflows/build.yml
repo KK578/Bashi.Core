@@ -22,12 +22,6 @@ jobs:
         with:
           args: /github/workspace /nofetch /exec /bin/sh /execargs "-c \"echo $GitVersion_FullSemVer > /github/workspace/version.txt\"
 
-      - name: "[Debug] Dump Environment"
-        run: env
-
-      - name: "[Setup] Set VERSION"
-        run: echo "::set-env name=VERSION::$GitVersion_NuGetVersionV2+$GitVersion_BuildMetaData"
-
       - name: "[Setup] Install .NET Core"
         uses: actions/setup-dotnet@v1
         with:
@@ -55,10 +49,9 @@ jobs:
           dotnet build \
             --no-restore \
             --configuration Release \
-            /p:VersionPrefix=$GitVersion_MajorMinorPatch \
-            /p:VersionSuffix="$GitVersion_NuGetPreReleaseTagV2+$GitVersion_BuildMetaData" \
             /p:AssemblyVersion=$GitVersion_AssemblySemVer \
-            /p:PackageVersion="${{ env.VERSION }}" \
+            /p:FileVersion=$GitVersion_AssemblySemFileVer \
+            /p:InformationalVersion=$GitVersion_InformationalVersion \
             /p:RepositoryBranch=${GITHUB_REF#refs/heads/} \
             /p:RepositoryCommit=$GITHUB_SHA
 
@@ -74,10 +67,9 @@ jobs:
           dotnet pack \
             --configuration Release \
             --no-build \
-            /p:VersionPrefix=$GitVersion_MajorMinorPatch \
-            /p:VersionSuffix="$GitVersion_NuGetPreReleaseTagV2+$GitVersion_BuildMetaData" \
             /p:AssemblyVersion=$GitVersion_AssemblySemVer \
-            /p:PackageVersion="${{ env.VERSION }}" \
+            /p:FileVersion=$GitVersion_AssemblySemFileVer \
+            /p:InformationalVersion=$GitVersion_InformationalVersion \
             /p:RepositoryBranch=${GITHUB_REF#refs/heads/} \
             /p:RepositoryCommit=$GITHUB_SHA
 
@@ -85,7 +77,7 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: Bashi.Core.Artifacts
-          path: src/Bashi.Core/bin/Release/Bashi.Core.${{ env.VERSION }}.nupkg
+          path: src/Bashi.Core/bin/Release/Bashi.Core.*.nupkg
 
       - name: "[Coverage] Upload to SonarCloud"
         env:
