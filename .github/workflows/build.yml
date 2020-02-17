@@ -3,6 +3,7 @@ name: Build
 on:
   push:
   pull_request:
+  release:
 
 jobs:
   build:
@@ -19,7 +20,7 @@ jobs:
       - name: "[Setup] Create GitVersion"
         uses: docker://gittools/gitversion:5.1.3-linux-netcoreapp2.1
         with:
-          args: /github/workspace /nofetch /exec /bin/sh /execargs "-c \"echo $GitVersion_FullSemVer > /github/workspace/version.txt\""
+          args: /github/workspace /nofetch /exec /bin/sh /execargs "-c \"echo $GitVersion_FullSemVer > /github/workspace/version.txt\"
 
       - name: "[Setup] Install .NET Core"
         uses: actions/setup-dotnet@v1
@@ -30,7 +31,6 @@ jobs:
         env:
           SONARCLOUD_LOGIN: ${{ secrets.SONARCLOUD_LOGIN }}
         run: |
-          VERSION=$(cat version.txt)
           dotnet tool install --global dotnet-sonarscanner --version 4.8.0
           ~/.dotnet/tools/dotnet-sonarscanner begin \
             /k:"KK578_Bashi.Core" \
@@ -39,16 +39,23 @@ jobs:
             /d:sonar.host.url=https://sonarcloud.io \
             /d:sonar.cs.opencover.reportsPaths="coverage/coverage.opencover.xml" \
             /d:sonar.cs.nunit.reportsPaths="test/*/TestResults/TestResults.xml" \
-            /v:"$VERSION"
+            /v:"${{ env.VERSION }}"
 
       - name: "[Build] NuGet Restore"
         run: dotnet restore
 
       - name: "[Build] Build Solution"
         run: |
-          VERSION=$(cat version.txt)
-          echo $VERSION
-          dotnet build --configuration Release /p:Version=$VERSION /p:AssemblyVersion=$VERSION
+          dotnet build \
+            --no-restore \
+            --configuration Release \
+            /p:VersionPrefix=$GitVersion_MajorMinorPatch \
+            /p:VersionSuffix=$GitVersion_PreReleaseLabel \
+            /p:AssemblyVersion=$GitVersion_AssemblySemVer \
+            /p:FileVersion=$GitVersion_AssemblySemFileVer \
+            /p:InformationalVersion=$GitVersion_InformationalVersion \
+            /p:RepositoryBranch=${GITHUB_REF#refs/heads/} \
+            /p:RepositoryCommit=$GITHUB_SHA
 
       - name: "[Test] Run Tests"
         run: |
@@ -57,18 +64,26 @@ jobs:
             --no-build \
             test/Bashi.Core.Tests/Bashi.Core.Tests.csproj
 
-      - name: "[Pack] Create NuGet Package"
+      - name: "[Deploy] Create NuGet Package"
+        id: dotnet-pack
         run: |
-          VERSION=$(cat version.txt)
-          echo $VERSION
           dotnet pack \
             --configuration Release \
             --no-build \
-            /p:Version=$VERSION \
-            /p:AssemblyVersion=$VERSION \
+            /p:VersionPrefix=$GitVersion_MajorMinorPatch \
+            /p:VersionSuffix=$GitVersion_PreReleaseLabel \
+            /p:AssemblyVersion=$GitVersion_AssemblySemVer \
+            /p:FileVersion=$GitVersion_AssemblySemFileVer \
+            /p:InformationalVersion=$GitVersion_InformationalVersion \
             /p:RepositoryBranch=${GITHUB_REF#refs/heads/} \
             /p:RepositoryCommit=$GITHUB_SHA
-          dotnet nuget push src/Bashi.Core/bin/Release/Bashi.Core.*.nupkg" --source "github"
+          echo "::set-output name=PACKAGE_VERSION::$(find src/ -type f -iname 'Bashi.Core.*.nupkg')"
+
+      - name: "[Artifacts] Upload Nuget Package"
+        uses: actions/upload-artifact@v1
+        with:
+          name: Bashi.Core.Artifacts
+          path: ${{ steps.dotnet-pack.outputs.PACKAGE_VERSION }}
 
       - name: "[Coverage] Upload to SonarCloud"
         env:
@@ -82,3 +97,17 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path-to-lcov: "./coverage/coverage.info"
+
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.event_name == 'release'
+    steps:
+      - name: "[Artifacts] Download Nuget Package"
+        uses: actions/download-artifact@v1
+        with:
+          name: Bashi.Core.Artifacts
+
+      - name: "[Deploy] Publish Package"
+        run: dotnet nuget push Bashi.Core.Artifacts/Bashi.Core.*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
