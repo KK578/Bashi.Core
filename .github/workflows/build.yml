@@ -65,6 +65,7 @@ jobs:
             test/Bashi.Core.Tests/Bashi.Core.Tests.csproj
 
       - name: "[Deploy] Create NuGet Package"
+        id: dotnet-pack
         run: |
           dotnet pack \
             --configuration Release \
@@ -82,7 +83,7 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: Bashi.Core.Artifacts
-          path: ${{ steps.nuget-pack.outputs.PACKAGE_VERSION }}
+          path: ${{ steps.dotnet-pack.outputs.PACKAGE_VERSION }}
 
       - name: "[Coverage] Upload to SonarCloud"
         env:
