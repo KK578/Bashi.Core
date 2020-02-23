@@ -40,7 +40,7 @@ jobs:
             /d:sonar.host.url=https://sonarcloud.io \
             /d:sonar.cs.opencover.reportsPaths="coverage/coverage.opencover.xml" \
             /d:sonar.cs.nunit.reportsPaths="test/*/TestResults/TestResults.xml" \
-            /v:"${{ env.VERSION }}"
+            /v:$GitVersion_FullSemVer
 
       - name: "[Build] NuGet Restore"
         run: dotnet restore
