@@ -19,6 +19,6 @@ exclude-labels:
   - "exclude"
 change-template: "- $TITLE (@$AUTHOR | PR #$NUMBER)"
 template: |
-  ## Changes
+  # Changes
 
   $CHANGES
