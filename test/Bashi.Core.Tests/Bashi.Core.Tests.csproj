@@ -15,10 +15,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Bashi.Core\Bashi.Core.csproj" />
-    <ProjectReference Include="..\Bashi.Tests.Framework\Bashi.Tests.Framework.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Bashi.Tests.Framework" Version="1.0.0" />
     <PackageReference Include="coverlet.msbuild" Version="2.7.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
     <PackageReference Include="NUnit" Version="3.12.0" />
