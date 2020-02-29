@@ -15,7 +15,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Bashi.Core\Bashi.Core.csproj" />
-    <ProjectReference Include="..\Bashi.Tests.Framework\Bashi.Tests.Framework.csproj" />
+
+    <PackageReference Include="Bashi.Tests.Framework" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>

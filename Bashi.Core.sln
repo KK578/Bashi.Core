@@ -2,8 +2,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bashi.Core", "src\Bashi.Core\Bashi.Core.csproj", "{D4F990A0-8DFF-4EAE-A518-A39EF51F4355}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bashi.Tests.Framework", "test\Bashi.Tests.Framework\Bashi.Tests.Framework.csproj", "{E2C09D4F-AE55-4160-BB0A-67A4F1DFAF2F}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bashi.Core.Tests", "test\Bashi.Core.Tests\Bashi.Core.Tests.csproj", "{C741B03A-43A6-419F-AF9B-38DEDF1726CA}"
 EndProject
 Global
@@ -16,10 +14,6 @@ Global
 		{D4F990A0-8DFF-4EAE-A518-A39EF51F4355}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4F990A0-8DFF-4EAE-A518-A39EF51F4355}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D4F990A0-8DFF-4EAE-A518-A39EF51F4355}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E2C09D4F-AE55-4160-BB0A-67A4F1DFAF2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E2C09D4F-AE55-4160-BB0A-67A4F1DFAF2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E2C09D4F-AE55-4160-BB0A-67A4F1DFAF2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E2C09D4F-AE55-4160-BB0A-67A4F1DFAF2F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C741B03A-43A6-419F-AF9B-38DEDF1726CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C741B03A-43A6-419F-AF9B-38DEDF1726CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C741B03A-43A6-419F-AF9B-38DEDF1726CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
