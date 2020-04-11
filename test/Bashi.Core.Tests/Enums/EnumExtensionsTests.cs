@@ -1,20 +1,11 @@
 ﻿using Bashi.Core.Enums;
 using NUnit.Framework;
-using DescriptionAttribute = System.ComponentModel.DescriptionAttribute;
 
 namespace Bashi.Core.Tests.Enums
 {
     [TestFixture]
     public class EnumExtensionsTests
     {
-        private enum TestColour
-        {
-            [Description("#FF0000")] Red,
-            [Description("#00FF00")] Green,
-            [Description("#0000FF")] Blue,
-            Yellow
-        }
-
         [Test]
         public void GetDescription_GivenMemberDoesNotHaveDescriptionAttribute_ShouldReturnToString()
         {
