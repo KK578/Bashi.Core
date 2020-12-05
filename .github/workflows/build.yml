@@ -19,28 +19,14 @@ jobs:
           git branch --create-reflog master origin/master
 
       - name: "[Setup] Create GitVersion"
-        uses: docker://gittools/gitversion:5.1.3-linux-netcoreapp2.1
+        uses: docker://gittools/gitversion:5.5.2-linux-alpine.3.10-x64-netcoreapp3.1
         with:
-          args: /github/workspace /nofetch /exec /bin/sh /execargs "-c \"echo $GitVersion_FullSemVer > /github/workspace/version.txt\"
+          args: /github/workspace /nofetch /output buildserver
 
       - name: "[Setup] Install .NET Core"
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 3.1.101
-
-      - name: "[Coverage] Instrument with Sonar"
-        env:
-          SONARCLOUD_LOGIN: ${{ secrets.SONARCLOUD_LOGIN }}
-        run: |
-          dotnet tool install --global dotnet-sonarscanner --version 4.8.0
-          ~/.dotnet/tools/dotnet-sonarscanner begin \
-            /k:"KK578_Bashi.Core" \
-            /o:"kk578" \
-            /d:sonar.login="$SONARCLOUD_LOGIN" \
-            /d:sonar.host.url=https://sonarcloud.io \
-            /d:sonar.cs.opencover.reportsPaths="coverage/coverage.opencover.xml" \
-            /d:sonar.cs.nunit.reportsPaths="test/*/TestResults/TestResults.xml" \
-            /v:$GitVersion_FullSemVer
+          dotnet-version: 5.0.100
 
       - name: "[Build] NuGet Restore"
         run: dotnet restore
@@ -86,15 +72,8 @@ jobs:
           name: Bashi.Core.Artifacts
           path: ${{ steps.dotnet-pack.outputs.PACKAGE_VERSION }}
 
-      - name: "[Coverage] Upload to SonarCloud"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONARCLOUD_LOGIN: ${{ secrets.SONARCLOUD_LOGIN }}
-        run: |
-          ~/.dotnet/tools/dotnet-sonarscanner end /d:sonar.login="$SONARCLOUD_LOGIN"
-
       - name: "[Coverage] Upload to Coveralls"
-        uses: coverallsapp/github-action@v1.0.1
+        uses: coverallsapp/github-action@v1.1.1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path-to-lcov: "./coverage/coverage.info"
