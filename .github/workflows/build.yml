@@ -83,7 +83,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: build
-#    if: github.event_name == 'release'
+    if: github.event_name == 'release'
     steps:
       - name: "[Artifacts] Download Nuget Package"
         uses: actions/download-artifact@v1
@@ -93,5 +93,5 @@ jobs:
       - name: "[Deploy] Publish Package to GitHub Packages"
         run: dotnet nuget push Bashi.Core.Artifacts/Bashi.Core.*.nupkg -k ${{ secrets.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/KK578/index.json
 
-#      - name: "[Deploy] Publish Package"
-#        run: dotnet nuget push Bashi.Core.Artifacts/Bashi.Core.*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
+      - name: "[Deploy] Publish Package"
+        run: dotnet nuget push Bashi.Core.Artifacts/Bashi.Core.*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
