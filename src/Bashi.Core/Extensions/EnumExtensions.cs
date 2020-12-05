@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 
-namespace Bashi.Core.Enums
+namespace Bashi.Core.Extensions
 {
     /// <summary>
     /// Provides various extensions to be used on <see cref="System.Enum"/> values.

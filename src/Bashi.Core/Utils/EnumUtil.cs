@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Bashi.Core.Extensions;
 
-namespace Bashi.Core.Enums
+namespace Bashi.Core.Utils
 {
     /// <summary>
     /// Provides various static utility methods to be used on <see cref="System.Enum"/> values.
