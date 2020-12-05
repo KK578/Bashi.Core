@@ -90,5 +90,8 @@ jobs:
         with:
           name: Bashi.Core.Artifacts
 
+      - name: "[Deploy] Publish Package to GitHub Packages"
+        run: dotnet nuget push Bashi.Core.Artifacts/Bashi.Core.*.nupkg -k ${{ secrets.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/KK578/index.json
+
       - name: "[Deploy] Publish Package"
         run: dotnet nuget push Bashi.Core.Artifacts/Bashi.Core.*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
