@@ -10,13 +10,13 @@ namespace Bashi.Core.Tests.Extensions
         public class GetDescriptionTests
         {
             [Test]
-            public void GetDescription_GivenMemberDoesNotHaveDescriptionAttribute_ShouldReturnToString()
+            public void GivenMemberDoesNotHaveDescriptionAttribute_ShouldReturnToString()
             {
                 Assert.That(EnumUtilTests.TestColour.Yellow.GetDescription(), Is.EqualTo("Yellow"));
             }
 
             [Test]
-            public void GetDescription_GivenMemberDoesHaveDescriptionAttribute_ShouldReturnDescriptionValue()
+            public void GivenMemberDoesHaveDescriptionAttribute_ShouldReturnDescriptionValue()
             {
                 Assert.That(EnumUtilTests.TestColour.Red.GetDescription(), Is.EqualTo("#FF0000"));
                 Assert.That(EnumUtilTests.TestColour.Green.GetDescription(), Is.EqualTo("#00FF00"));

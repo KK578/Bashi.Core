@@ -21,7 +21,7 @@ namespace Bashi.Core.Tests.TinyTypes
         public class CompareToTests
         {
             [Test]
-            public void CompareTo_GivenNullOrNonMatchingTypes_ThenWillThrowException()
+            public void GivenNullOrNonMatchingTypes_ThenWillThrowException()
             {
                 var tt = new MyNumber(TestData.WellKnownInt);
 
@@ -32,7 +32,7 @@ namespace Bashi.Core.Tests.TinyTypes
             }
 
             [Test]
-            public void CompareTo_GivenMatchingTypes_ThenWillCompareByUnderlying()
+            public void GivenMatchingTypes_ThenWillCompareByUnderlying()
             {
                 var tt = new MyNumber(TestData.WellKnownInt);
                 var value = TestData.NextInt();
@@ -47,7 +47,7 @@ namespace Bashi.Core.Tests.TinyTypes
         public class EqualsTests
         {
             [Test]
-            public void Equals_GivenANonMatchingTypeAndValue_ThenTheyAreNotEqual()
+            public void GivenANonMatchingTypeAndValue_ThenTheyAreNotEqual()
             {
                 var tt = new MyNumber(TestData.WellKnownInt);
 
@@ -57,7 +57,7 @@ namespace Bashi.Core.Tests.TinyTypes
             }
 
             [Test]
-            public void Equals_GivenAMatchingType_WhenValuesDoNotMatch_ThenTheyAreNotEqual()
+            public void GivenAMatchingType_WhenValuesDoNotMatch_ThenTheyAreNotEqual()
             {
                 var tt = new MyNumber(TestData.WellKnownInt);
 
@@ -69,7 +69,7 @@ namespace Bashi.Core.Tests.TinyTypes
             }
 
             [Test]
-            public void Equals_GivenAMatchingType_WhenValuesDoNotMatch_ThenTheyAreEqual()
+            public void GivenAMatchingType_WhenValuesDoNotMatch_ThenTheyAreEqual()
             {
                 var tt = new MyNumber(TestData.WellKnownInt);
 
@@ -84,7 +84,7 @@ namespace Bashi.Core.Tests.TinyTypes
         public class GetHashCodeTests
         {
             [Test]
-            public void GetHashCode_MatchesUnderlyingValueHashCode()
+            public void MatchesUnderlyingValueHashCode()
             {
                 var tt = new MyNumber(TestData.WellKnownInt);
                 Assert.That(tt.GetHashCode(), Is.EqualTo(TestData.WellKnownInt.GetHashCode()));
@@ -94,7 +94,7 @@ namespace Bashi.Core.Tests.TinyTypes
         public class OperationTests
         {
             [Test]
-            public void ImplicitOperatorToUnderlying_ShouldAutomaticallyConvertValues()
+            public void ShouldAutomaticallyConvertValues()
             {
                 var tt = new MyNumber(TestData.WellKnownInt);
                 int value = tt;

@@ -44,20 +44,20 @@ namespace Bashi.Core.Tests.Utils
             [TestCase("#0000FF", TestColour.Blue)]
             [TestCase("Blue", TestColour.Blue)]
             [TestCase("Yellow", TestColour.Yellow)]
-            public void ParseWithDescription_ShouldHandleParsableCases(string description, TestColour expected)
+            public void ShouldHandleParsableCases(string description, TestColour expected)
             {
                 Assert.That(EnumUtil.ParseWithDescription<TestColour>(description), Is.EqualTo(expected));
             }
 
             [Test]
-            public void ParseWithDescription_WhenCaseSensitiveParsing_ShouldThrowIfDescriptionNotExactMatch()
+            public void WhenCaseSensitiveParsing_ShouldThrowIfDescriptionNotExactMatch()
             {
                 Assert.That(() => EnumUtil.ParseWithDescription<TestColour>("#ff0000", StringComparer.Ordinal),
                             Throws.Exception);
             }
 
             [Test]
-            public void ParseWithDescription_ShouldThrowIfNotParseable()
+            public void ShouldThrowIfNotParseable()
             {
                 Assert.That(() => EnumUtil.ParseWithDescription<TestColour>("#FFFF00"), Throws.Exception);
             }
