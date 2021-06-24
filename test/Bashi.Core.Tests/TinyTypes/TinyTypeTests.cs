@@ -90,17 +90,5 @@ namespace Bashi.Core.Tests.TinyTypes
                 Assert.That(tt.GetHashCode(), Is.EqualTo(TestData.WellKnownInt.GetHashCode()));
             }
         }
-
-        public class OperationTests
-        {
-            [Test]
-            public void ShouldAutomaticallyConvertValues()
-            {
-                var tt = new MyNumber(TestData.WellKnownInt);
-                int value = tt;
-                Assert.That(tt.Value, Is.EqualTo(value));
-                Assert.That(value, Is.EqualTo(TestData.WellKnownInt));
-            }
-        }
     }
 }
