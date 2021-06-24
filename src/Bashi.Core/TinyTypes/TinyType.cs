@@ -139,5 +139,11 @@ namespace Bashi.Core.TinyTypes
         {
             return EqualityComparer<T>.Default.Equals(this.Value, other);
         }
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return this.Value.ToString()!;
+        }
     }
 }

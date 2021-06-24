@@ -90,5 +90,15 @@ namespace Bashi.Core.Tests.TinyTypes
                 Assert.That(tt.GetHashCode(), Is.EqualTo(TestData.WellKnownInt.GetHashCode()));
             }
         }
+
+        public class ToStringTests
+        {
+            [Test]
+            public void MatchesUnderlyingValueToString()
+            {
+                var tt = new MyNumber(TestData.WellKnownInt);
+                Assert.That(tt.ToString(), Is.EqualTo(TestData.WellKnownInt.ToString()));
+            }
+        }
     }
 }
