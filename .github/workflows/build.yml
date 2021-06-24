@@ -19,7 +19,7 @@ jobs:
           git branch --create-reflog master origin/master
 
       - name: "[Setup] Create GitVersion"
-        uses: docker://gittools/gitversion:5.5.2-linux-alpine.3.10-x64-netcoreapp3.1
+        uses: docker://gittools/gitversion:5.6.1-alpine.3.12-x64-3.1
         with:
           args: /github/workspace /nofetch /output buildserver
 
@@ -33,9 +33,7 @@ jobs:
 
       - name: "[Build] Build Solution"
         run: |
-          dotnet build \
-            --no-restore \
-            --configuration Release \
+          dotnet build --no-restore --configuration Release \
             /p:VersionPrefix=$GitVersion_MajorMinorPatch \
             /p:VersionSuffix=$GitVersion_PreReleaseLabel \
             /p:AssemblyVersion=$GitVersion_AssemblySemVer \
@@ -45,18 +43,15 @@ jobs:
             /p:RepositoryCommit=$GITHUB_SHA
 
       - name: "[Test] Run Tests"
-        run: |
-          dotnet test \
-            --configuration Release \
-            --no-build \
-            test/Bashi.Core.Tests/Bashi.Core.Tests.csproj
+        run: dotnet test --no-build --configuration Release
 
       - name: "[Deploy] Create NuGet Package"
         id: dotnet-pack
         run: |
           dotnet pack \
-            --configuration Release \
+            --no-restore \
             --no-build \
+            --configuration Release \
             /p:VersionPrefix=$GitVersion_MajorMinorPatch \
             /p:VersionSuffix=$GitVersion_PreReleaseLabel \
             /p:AssemblyVersion=$GitVersion_AssemblySemVer \

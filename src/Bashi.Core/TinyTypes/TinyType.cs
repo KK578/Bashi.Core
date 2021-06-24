@@ -34,14 +34,6 @@ namespace Bashi.Core.TinyTypes
         public T Value { get; }
 
         /// <summary>
-        /// Implicitly casts a <see cref="TinyType{T}"/> into the underlying <typeparamref name="T"/>.
-        /// </summary>
-        /// <param name="arg">The instance of the TinyType.</param>
-        /// <returns>Returns <see cref="Value"/>.</returns>
-        [SuppressMessage("ReSharper", "CA2225", Justification = "Operator is a shorthand for accessing the Value property.")]
-        public static implicit operator T(TinyType<T> arg) => arg.Value;
-
-        /// <summary>
         /// Overriding operator for equality check between two <see cref="TinyType{T}"/> instances.
         /// </summary>
         /// <param name="left">First instance to be compared.</param>
@@ -146,6 +138,12 @@ namespace Bashi.Core.TinyTypes
         protected virtual bool Equals(T other)
         {
             return EqualityComparer<T>.Default.Equals(this.Value, other);
+        }
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return this.Value.ToString()!;
         }
     }
 }
